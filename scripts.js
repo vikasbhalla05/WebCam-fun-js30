@@ -5,7 +5,7 @@ const strip = document.querySelector('.strip');
 const snap = document.querySelector('.snap');
 
 function getVideo(){
-	navigator.mediaDevices.getUserMedia({video:'true', audio:'false'})
+	navigator.mediaDevices.getUserMedia({video:true, audio:false})
 	.then(localMediaStream => {
 		video.srcObject = localMediaStream;
 		video.play();
@@ -23,6 +23,17 @@ function paintCanvas(){
 	return setInterval(() => {
 		ctx.drawImage(video,0,0,width,height);
 	}, 16);
+}
+
+function takePhoto(){
+	snap.currentTime = 0;
+	snap.play();
+	let shotData = canvas.toDataURL("image/jpeg");
+	let link = document.createElement('a');
+	link.href = shotData;
+	link.setAttribute('download', 'screenshot');
+	link.innerHTML = `<image src=${shotData} alt="screenshot" />`;
+	strip.insertBefore(link, strip.firstChild);
 }
 
 getVideo();
